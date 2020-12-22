@@ -1,24 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { firebase, db, storage } from '../firebase'
+import React, { useState, useContext } from 'react'
 import { Context } from '../Provider/provider'
 const LoginComp = () => {
-    const { user, Login } = useContext(Context);
+    const { Login } = useContext(Context);
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const Check = () => {
-        Login(name, password);
-    }
     return(
-        <div style={{display: `${user ? 'block': 'none'}`}}>
+        <div>
             <div>
                 <p>Username:</p>
-                <input type='text' onChange={(e) => setName(e.target.value)} value={name}/>
+                <input type='text' onChange={(e) => setName(e.target.value)}/>
             </div>
             <div>
                 <p>Password:</p>
-                <input type='password' onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <input type='password' onChange={(e) => setPassword(e.target.value)}/>
             </div>
-            <button onClick={() => Check()}>Login</button>
+            <button onClick={() => Login(name, password)}>Login</button>
         </div>
     );
 }

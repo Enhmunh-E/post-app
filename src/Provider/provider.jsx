@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { auth } from '../firebase'
+import { useHistory } from 'react-router-dom'
 export const Context = createContext({
     user: null,
     setUser: () => {},
@@ -9,8 +10,8 @@ export const Context = createContext({
 })
 export const Provider = ({children}) => {
     const [user, setUser] = useState(null);
+    const history = useHistory();
     var userData = auth.currentUser;
-    // console.log(userData);
     useEffect(() => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
@@ -27,10 +28,12 @@ export const Provider = ({children}) => {
             auth.signInWithEmailAndPassword(email, password)
             .then((user) => {
                 setUser(user);
+                history.push('/home');
             })
             .catch((error) => {
                 alert(error.message);
             });
+            history.push('/home')
         }
     }
     const SignUp = (email, password) => {
@@ -49,6 +52,7 @@ export const Provider = ({children}) => {
         }).catch((error) => {
             alert(error.message);
         })
+        console.log(user);
     }
     return(
         <Context.Provider value={{ user, Login, SignUp, LogOut }}>
