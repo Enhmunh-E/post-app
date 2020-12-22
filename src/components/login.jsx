@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { firebase, db, storage } from '../firebase'
 import { Context } from '../Provider/provider'
-const Login = () => {
-    const { user, Login, LogOut, SignUp } = useContext(Context);
+const LoginComp = () => {
+    const { user, Login } = useContext(Context);
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const Check = () => {
@@ -22,4 +22,4 @@ const Login = () => {
         </div>
     );
 }
-export { Login }
+export { LoginComp }

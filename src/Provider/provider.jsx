@@ -15,25 +15,25 @@ export const Provider = ({children}) => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
                 if (user) {
-                setUser(user);
+                    setUser(user);
                 } else {
-                setUser(null);
+                    setUser(null);
                 }
             });
         }
     }, [auth])
-    const Login = ( email, password ) => {
+    const Login = (email, password) => {
         if (!user) {
-        auth.signInWithEmailAndPassword(email, password)
-        .then((user) => {
-            setUser(user);
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
+            auth.signInWithEmailAndPassword(email, password)
+            .then((user) => {
+                setUser(user);
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
         }
     }
-    const SignUp = () => {
+    const SignUp = (email, password) => {
         auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             setUser(user);
@@ -43,6 +43,7 @@ export const Provider = ({children}) => {
         });
     } 
     const LogOut = () => {
+        console.log('LogOut');
         auth.signOut().then(() => {
             setUser(null);
         }).catch((error) => {
