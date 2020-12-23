@@ -1,8 +1,9 @@
 import React from 'react';;
-const PostItem = ({ type, text, time, user, like }) => {
-    if (type == 'text') {
+const PostItem = ({ type, text, time, user, like, index }) => {
+    if (type === 'text') {
         return (
             <div className='post'>
+                {/* {index+'.'} */}
                 <div>
                     <div>{user}</div>
                     <div>{time}</div>

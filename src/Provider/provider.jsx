@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
 import { useHistory } from 'react-router-dom'
 export const Context = createContext({
     user: null,
+    userName: '',
     setUser: () => {},
     Login: () => {},
     SignUp: () => {},
@@ -10,12 +11,12 @@ export const Context = createContext({
 })
 export const Provider = ({children}) => {
     const [user, setUser] = useState(null);
-    const history = useHistory();
+    const [userName, setUserName] = useState('');
     var userData = auth.currentUser;
     useEffect(() => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
-                if (user) {
+                if (user) { 
                     setUser(user);
                 } else {
                     setUser(null);
@@ -27,22 +28,25 @@ export const Provider = ({children}) => {
         if (!user) {
             auth.signInWithEmailAndPassword(email, password)
             .then((user) => {
+                searchUserName(email);
                 setUser(user);
-                history.push('/home');
             })
             .catch((error) => {
-                alert(error.message);
+                console.log(error)
+                // alert(error.message);
             });
-            history.push('/home')
         }
     }
-    const SignUp = (email, password) => {
+    const SignUp = (email, password, username) => {
         auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             setUser(user);
+            addUserName(username, email);
         })
         .catch((error) => {
-            alert(error.message);
+            console.log(email);
+            console.log(error);
+            // alert(error.message);
         });
     } 
     const LogOut = () => {
@@ -52,10 +56,27 @@ export const Provider = ({children}) => {
         }).catch((error) => {
             alert(error.message);
         })
-        console.log(user);
+    }
+    const addUserName = (name, email) => {
+        console.log(name, email,'addusername');
+        db.collection('/accs').add({
+            name: name,
+            email: email,
+        });
+    }
+    const searchUserName = (email) => {
+        db.collection('/accs').onSnapshot(snapshot => {
+            const data = snapshot.docs.map((doc) => {return doc.data()})
+            data.forEach((dt) => {
+                console.log(dt.email, email);
+                if (dt.email === email) {
+                    setUserName(dt.name);
+                }
+            })
+        })
     }
     return(
-        <Context.Provider value={{ user, Login, SignUp, LogOut }}>
+        <Context.Provider value={{ user, userName, Login, SignUp, LogOut }}>
             {children}
         </Context.Provider>
     )

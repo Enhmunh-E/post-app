@@ -1,13 +1,13 @@
 import React from 'react'
-import { LoginComp } from './components/login';
-import { Provider } from './Provider/provider';
-import { Post } from './components/post';
-import { LogOutComp } from './components/logout';
+import { LoginComp } from './components/login'
+import { Provider } from './Provider/provider'
+import { Post } from './components/post'
+import { SignUpComp } from './components/signup'
+import { Nav } from './components/nav'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import './App.css'
 const App = () => {
@@ -16,13 +16,16 @@ const App = () => {
       <Router>
         <div className="App">
           <Switch>
-            <Route path="/">
-              <LoginComp />
+            <Route exact path="/">
+              <div style={{display: 'flex', flexDirection: 'row'}}>
+                <LoginComp />
+                <SignUpComp />
+              </div>
             </Route>
-            <Route path="/home">
-              <LogOutComp />
+            <Route exact path="/home">
+              <Nav />
               <Post />
-            </Route>
+            </Route>  
           </Switch>
         </div>
       </Router>

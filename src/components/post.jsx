@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { firebase, db, storage } from '../firebase'
+import { db } from '../firebase'
 import { PostItem } from './postItem'
 const Post = () => {
     const [posts, setPosts] = useState([]);
@@ -7,14 +7,14 @@ const Post = () => {
         db.collection('/Posts').onSnapshot((snapshot) => {
           const data = snapshot.docs.map((doc) => {return doc.data()})
           setPosts([...data]);
-          console.log(data);
+        //   console.log(data);
         })
     }, [])
     return (
         <div>
             {
                 posts.map((post, index) => {
-                    return <PostItem type={post.type} text={post.text} time={post.time} user={post.user} like={post.like}/>
+                    return <PostItem type={post.type} text={post.text} time={post.time} user={post.user} like={post.like} index={index}/>
                 })
             }
         </div>
