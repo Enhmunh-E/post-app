@@ -9,23 +9,28 @@ const SignUpComp = () => {
     const [password, setPassword] = useState('');
     const sgnup = () => {
         if (email !== '' && name !== '' && password !== '') {
-            SignUp(email, password, name);
-            history.push('/home')
+            let er = SignUp(email, password, name);
+            console.log(er)
+            if (er == '1') {
+                history.push('/home')
+            }else {
+                alert(er);
+            }
         }
     }
     return (
         <div style={{margin: '10px'}}>
             <div>
                 <p>Email:</p>
-                <input type='email' onChange={(e) => setEmail(e.target.value)}/>
+                <input type='email' onChange={(e) => setEmail(e.target.value)} required/>
             </div>
             <div>
                 <p>Username:</p>
-                <input type='text' onChange={(e) => setName(e.target.value)}/>
+                <input type='text' onChange={(e) => setName(e.target.value)} required/>
             </div>
             <div>
                 <p>Password:</p>
-                <input type='password' onChange={(e) => setPassword(e.target.value)}/>
+                <input type='password' onChange={(e) => setPassword(e.target.value)} required/>
             </div>
             <button onClick={sgnup}>Sign Up</button>
         </div>

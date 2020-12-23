@@ -41,12 +41,15 @@ export const Provider = ({children}) => {
         auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             setUser(user);
+            setUserName(username);
             addUserName(username, email);
+            return '1';
         })
         .catch((error) => {
-            console.log(email);
-            console.log(error);
-            // alert(error.message);
+            // console.log(email);
+            // console.log(error); 
+            console.log(error.message)
+            return error.message;
         });
     } 
     const LogOut = () => {
@@ -59,13 +62,13 @@ export const Provider = ({children}) => {
     }
     const addUserName = (name, email) => {
         console.log(name, email,'addusername');
-        db.collection('/accs').add({
+        db.collection('accs').add({
             name: name,
             email: email,
         });
     }
     const searchUserName = (email) => {
-        db.collection('/accs').onSnapshot(snapshot => {
+        db.collection('accs').onSnapshot(snapshot => {
             const data = snapshot.docs.map((doc) => {return doc.data()})
             data.forEach((dt) => {
                 console.log(dt.email, email);
