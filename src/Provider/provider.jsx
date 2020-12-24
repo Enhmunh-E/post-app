@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { auth, db } from '../firebase'
+import { auth, db, storage } from '../firebase'
 // import { useHistory } from 'react-router-dom'
 export const Context = createContext({
     user: null,
@@ -8,6 +8,7 @@ export const Context = createContext({
     Login: () => {},
     SignUp: () => {},
     LogOut: () => {},
+    newPost: () => {}
 })
 export const Provider = ({children}) => {
     const [user, setUser] = useState(null);
@@ -17,6 +18,8 @@ export const Provider = ({children}) => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
                 if (user) { 
+                    // console.log(user.email);
+                    searchUserName(user.email);
                     setUser(user);
                 } else {
                     setUser(null);
@@ -24,18 +27,20 @@ export const Provider = ({children}) => {
             });
         }
     }, [auth])
-    const Login = (email, password) => {
+    const Login = async (email, password) => {
+        let r = "No Problem";
         if (!user) {
-            auth.signInWithEmailAndPassword(email, password)
+            await auth.signInWithEmailAndPassword(email, password)
             .then((user) => {
-                searchUserName(email);
+                searchUserName(user);
                 setUser(user);
             })
             .catch((error) => {
-                console.log(error)
-                // alert(error.message);
+                r = error.message;
+                // console.log(error)
             });
         }
+        return r;
     }
     const SignUp = async (email, password, username) => {
         let r = "No Problem";
@@ -46,18 +51,16 @@ export const Provider = ({children}) => {
             addUserName(username, email);   
         })
         .catch((error) => {
-            console.log(error.message);
-            // return error.message;
             r = error.message;
         });
         return r;
     } 
     const LogOut = () => {
-        console.log('LogOut');
         auth.signOut().then(() => {
             setUser(null);
         }).catch((error) => {
-            alert(error.message);
+            console.log(error.message);
+            // alert(error.message);
         })
     }
     const addUserName = (name, email) => {
@@ -71,15 +74,65 @@ export const Provider = ({children}) => {
         db.collection('accs').onSnapshot(snapshot => {
             const data = snapshot.docs.map((doc) => {return doc.data()})
             data.forEach((dt) => {
-                console.log(dt.email, email);
+                // console.log(dt.email, email);
                 if (dt.email === email) {
                     setUserName(dt.name);
                 }
             })
         })
     }
+    const newPost = async (file, text, type) => {
+        let done = 'done';
+        if (type === 'img') {
+            let r = uploadImg(file);
+            r.then((r) => {
+                if (r !== 'upload done') {
+                    alert(r);
+                    done = r;
+                }
+            })
+        }
+        let r = uploadText(text, type);
+        r.then((rt) => {
+            if (rt !== 'upload done') {
+                done = rt;
+            }
+        })
+        return done;
+    }
+    const uploadImg = async (file) => {
+        var r = 'upload done';
+        var storageRef = storage.ref();
+        var uploadImg = storageRef.child(`img-storage/${file.name}`).put(file);
+        await uploadImg.on('state_changed', (snapshot) => {
+        }, function(error) {
+            // alert(error.message);
+            r = error.message;
+        }, function() {
+            // console.log('upload done');
+        });
+        return r;
+    }
+    const uploadText = async (text, type) => {
+        var r = 'upload done';
+        await db.collection("Posts").add({
+            like: 0,
+            text: text,
+            time: new Date(),
+            type: type,
+            user: userName
+        })
+        .then(function(docRef) {
+            // console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            r = error.message;
+            // console.l(error);
+        });
+        return r;
+    }
     return(
-        <Context.Provider value={{ user, userName, Login, SignUp, LogOut }}>
+        <Context.Provider value={{ user, userName, Login, SignUp, LogOut, newPost }}>
             {children}
         </Context.Provider>
     )

@@ -10,7 +10,6 @@ const SignUpComp = () => {
     const sgnup = () => {
         let er = SignUp(email, password, name);    
         er.then((r) => {
-            console.log(r);
             if (r === "No Problem") {
                 history.push('/home')
             }else {

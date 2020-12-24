@@ -4,7 +4,7 @@ import { LogOutComp } from './logout'
 const Nav = () => {
     const { userName } = useContext(Context);
     return (
-        <div>
+        <div style={{top: '0px'}}>
             {userName}
             <LogOutComp/>
         </div>

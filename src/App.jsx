@@ -4,6 +4,7 @@ import { Provider } from './Provider/provider'
 import { Post } from './components/post'
 import { SignUpComp } from './components/signup'
 import { Nav } from './components/nav'
+import { NewPostComp } from './components/newpost'
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,6 +27,9 @@ const App = () => {
               <Nav />
               <Post />
             </Route>  
+            <Route exact path="/newpost">
+              <NewPostComp/>
+            </Route>
           </Switch>
         </div>
       </Router>

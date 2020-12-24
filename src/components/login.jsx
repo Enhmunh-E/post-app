@@ -7,10 +7,16 @@ const LoginComp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const lgin = () => {
-        if (email !== '' && password !== '') {
-            Login(email, password)
-            history.push('/home');
-        }
+        // if (email !== '' && password !== '') {
+            let er = Login(email, password);
+            er.then((r) => {
+                if (r === "No Problem") {
+                    history.push('/home');
+                }else {
+                    alert(r);
+                }
+            })
+        // }
     }
     return(
         <div style={{margin: '10px'}}>
