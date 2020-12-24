@@ -11,10 +11,10 @@ const Post = () => {
           setPosts([...data]);
         //   console.log(data);
         })
-    }, [])
+    }, [db])
     return (
         <div>
-            <button onClick={() => history.push('newpost')}></button>
+            <button onClick={() => history.push('/newpost')}>New Post</button>
             {
                 posts.map((post, index) => {
                     return <PostItem type={post.type} text={post.text} time={post.time} user={post.user} like={post.like} index={index} key={index}/>
