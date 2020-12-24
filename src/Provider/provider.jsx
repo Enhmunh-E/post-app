@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { auth, db } from '../firebase'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 export const Context = createContext({
     user: null,
     userName: '',
@@ -12,7 +12,7 @@ export const Context = createContext({
 export const Provider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userName, setUserName] = useState('');
-    var userData = auth.currentUser;
+    // var userData = auth.currentUser;
     useEffect(() => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
@@ -37,20 +37,20 @@ export const Provider = ({children}) => {
             });
         }
     }
-    const SignUp = (email, password, username) => {
-        auth.createUserWithEmailAndPassword(email, password)
+    const SignUp = async (email, password, username) => {
+        let r = "No Problem";
+        await auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
             setUser(user);
             setUserName(username);
-            addUserName(username, email);
-            return '1';
+            addUserName(username, email);   
         })
         .catch((error) => {
-            // console.log(email);
-            // console.log(error); 
-            console.log(error.message)
-            return error.message;
+            console.log(error.message);
+            // return error.message;
+            r = error.message;
         });
+        return r;
     } 
     const LogOut = () => {
         console.log('LogOut');

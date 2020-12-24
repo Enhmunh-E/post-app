@@ -8,15 +8,15 @@ const SignUpComp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const sgnup = () => {
-        if (email !== '' && name !== '' && password !== '') {
-            let er = SignUp(email, password, name);
-            console.log(er)
-            if (er == '1') {
+        let er = SignUp(email, password, name);    
+        er.then((r) => {
+            console.log(r);
+            if (r === "No Problem") {
                 history.push('/home')
             }else {
-                alert(er);
+                alert(r);
             }
-        }
+        })            
     }
     return (
         <div style={{margin: '10px'}}>
