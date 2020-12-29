@@ -18,20 +18,20 @@ const SignUpComp = () => {
         })            
     }
     return (
-        <div style={{margin: '10px'}}>
+        <div style={{margin: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             <div>
                 <p>Email:</p>
-                <input type='email' onChange={(e) => setEmail(e.target.value)} required/>
+                <input type='email' onChange={(e) => setEmail(e.target.value)} required  style={{height: '30px', width: '200px'}} className='input'/>
             </div>
             <div>
                 <p>Username:</p>
-                <input type='text' onChange={(e) => setName(e.target.value)} required/>
+                <input type='text' onChange={(e) => setName(e.target.value)} required  style={{height: '30px', width: '200px'}} className='input'/>
             </div>
             <div>
                 <p>Password:</p>
-                <input type='password' onChange={(e) => setPassword(e.target.value)} required/>
+                <input type='password' onChange={(e) => setPassword(e.target.value)} required  style={{height: '30px', width: '200px'}} className='input'/>
             </div>
-            <button onClick={sgnup}>Sign Up</button>
+            <div className='btn' onClick={sgnup}>Sign Up</div>
         </div>
     );
 }

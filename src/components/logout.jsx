@@ -9,7 +9,7 @@ const LogOutComp = () => {
         history.push('/')
     }
     return (
-        <button onClick={lgout}>LogOut</button>
+        <div className='btn' onClick={lgout} style={{height: '30px', width: '70px'}}>LogOut</div>
     );
 }
 export { LogOutComp }

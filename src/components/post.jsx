@@ -10,10 +10,10 @@ const Post = () => {
           const data = snapshot.docs.map((doc) => {return doc.data()})
           setPosts([...data]);
         })
-    }, [])
+    }, [db])
     return (
         <div>
-            <button onClick={() => history.push('/newpost')}>New Post +</button>
+            <div onClick={() => history.push('/newpost')} className='btn'>New Post +</div>
             {
                 posts.map((post, index) => {
                     return <PostItem like={post.like} text={post.text} sec={post.sec} hour={post.hour} minutes={post.minutes} date={post.date} user={post.user} imgname={post.imgname}  index={index} key={index}/>

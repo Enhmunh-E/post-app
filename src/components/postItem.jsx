@@ -3,7 +3,7 @@ import { storage } from '../firebase'
 const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }) => {
     const [url, setUrl] = useState('');
     if (imgname !== '') {
-        var itemRef = storage.ref().child(`img-storage/${sec}`);
+        var itemRef = storage.ref().child(`img-storage/${sec}.png`);
         itemRef.getDownloadURL().then(function(downloadURL) {
             setUrl(downloadURL);
         });
@@ -46,7 +46,7 @@ const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }
                     {text ? 'text:': ''}{text}
                 </div>
                 <div>
-                    <img src={url} width='375px'/>
+                    <img src={url} width='350px' alt={sec+'.png'}/>
                 </div>
                 <div className='p-btm'>
                     <p>like: {like}</p>

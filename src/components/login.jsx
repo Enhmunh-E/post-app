@@ -17,16 +17,16 @@ const LoginComp = () => {
         })
     }
     return(
-        <div style={{margin: '10px'}}>
+        <div style={{margin: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             <div>
                 <p>Email:</p>
-                <input type='text' onChange={(e) => setEmail(e.target.value)} required/>
+                <input type='text' onChange={(e) => setEmail(e.target.value)} required className='input' style={{height: '30px', width: '200px'}}/>
             </div>
             <div>
                 <p>Password:</p>
-                <input type='password' onChange={(e) => setPassword(e.target.value)} required/>
+                <input type='password' onChange={(e) => setPassword(e.target.value)} required className='input' style={{height: '30px', width: '200px'}}/>
             </div>
-            <button onClick={lgin}>Login</button>
+            <div className='btn' onClick={lgin}>Login</div>
         </div>
     );
 }

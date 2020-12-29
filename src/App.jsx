@@ -18,7 +18,7 @@ const App = () => {
         <div className="App">
           <Switch>
             <Route exact path="/">
-              <div style={{display: 'flex', flexDirection: 'row'}}>
+              <div style={{display: 'flex', flexDirection:'column', width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <LoginComp />
                 <SignUpComp />
               </div>
@@ -28,7 +28,9 @@ const App = () => {
               <Post />
             </Route>  
             <Route exact path="/newpost">
-              <NewPostComp/>
+              <div style={{display: 'flex', flexDirection:'column', width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <NewPostComp/>
+              </div>
             </Route>
           </Switch>
         </div>
