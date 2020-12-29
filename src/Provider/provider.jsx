@@ -82,17 +82,20 @@ export const Provider = ({children}) => {
         })
     }
     const newPost = async (file, text, type) => {
+        let sec = Date.now();
         let done = 'done';
+        let name = '';
         if (type === 'img') {
-            let r = uploadImg(file);
+            let r = uploadImg(file, sec);
             r.then((r) => {
                 if (r !== 'upload done') {
                     alert(r);
                     done = r;
                 }
             })
+            name = file.name;
         }
-        let r = uploadText(text, type);
+        let r = uploadText(text, name, sec);
         r.then((rt) => {
             if (rt !== 'upload done') {
                 done = rt;
@@ -100,10 +103,10 @@ export const Provider = ({children}) => {
         })
         return done;
     }
-    const uploadImg = async (file) => {
+    const uploadImg = async (file, sec) => {
         var r = 'upload done';
         var storageRef = storage.ref();
-        var uploadImg = storageRef.child(`img-storage/${file.name}`).put(file);
+        var uploadImg = storageRef.child(`img-storage/${sec}.png`).put(file);
         await uploadImg.on('state_changed', (snapshot) => {
         }, function(error) {
             // alert(error.message);
@@ -113,14 +116,21 @@ export const Provider = ({children}) => {
         });
         return r;
     }
-    const uploadText = async (text, type) => {
+    const uploadText = async (text, name, sec) => {
         var r = 'upload done';
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
         await db.collection("Posts").add({
             like: 0,
             text: text,
-            time: new Date(),
-            type: type,
-            user: userName
+            sec: sec,
+            date: mm+'/'+dd+'/'+yyyy,
+            hour: today.getHours(),
+            minutes: today.getMinutes(),
+            user: userName,
+            imgname: name
         })
         .then(function(docRef) {
             // console.log("Document written with ID: ", docRef.id);

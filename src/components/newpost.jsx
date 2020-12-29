@@ -7,23 +7,21 @@ const NewPostComp = () => {
     const [text, setText] = useState('');
     const [file, setFile] = useState([]);
     const post = () => {
-        let s = newPost(file, text, tp(file));
-        s.then((r) => {
-            if (r === 'done') {
-                history.push('/home');
-            }else {
-                alert(r);
+        console.log(file);
+        if (file.length !== 0 || text !== '') {
+            var type = 'img';
+            if (file.length === 0) {
+                type = 'text';
             }
-        })
-    }
-    const tp = (file) => {
-        let r = '';
-        if (file === []) {
-            r = 'text';
-        }else {
-            r = 'img';
+            let s = newPost(file, text, type);
+            s.then((r) => {
+                if (r === 'done') {
+                    history.push('/home');
+                }else {
+                    alert(r);
+                }
+            })
         }
-        return r;
     }
     return (
         <div>

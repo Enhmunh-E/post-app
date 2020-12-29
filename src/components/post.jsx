@@ -6,18 +6,17 @@ const Post = () => {
     const history = useHistory();
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-        db.collection('/Posts').onSnapshot((snapshot) => {
+        db.collection('/Posts').orderBy('sec', 'desc').onSnapshot((snapshot) => {
           const data = snapshot.docs.map((doc) => {return doc.data()})
           setPosts([...data]);
-        //   console.log(data);
         })
-    }, [db])
+    }, [])
     return (
         <div>
-            <button onClick={() => history.push('/newpost')}>New Post</button>
+            <button onClick={() => history.push('/newpost')}>New Post +</button>
             {
                 posts.map((post, index) => {
-                    return <PostItem type={post.type} text={post.text} time={post.time} user={post.user} like={post.like} index={index} key={index}/>
+                    return <PostItem like={post.like} text={post.text} sec={post.sec} hour={post.hour} minutes={post.minutes} date={post.date} user={post.user} imgname={post.imgname}  index={index} key={index}/>
                 })
             }
         </div>
