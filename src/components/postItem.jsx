@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { storage } from '../firebase'
+import { Context } from '../Provider/provider';
 const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }) => {
     const [url, setUrl] = useState('');
+    const { likeplus } = useContext(Context);
     if (imgname !== '') {
         var itemRef = storage.ref().child(`img-storage/${sec}.png`);
         itemRef.getDownloadURL().then(function(downloadURL) {
@@ -26,10 +28,12 @@ const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }
                     <p>{hr}:{min}</p>
                 </div>
                 <div>
-                    {text ? 'text:': ''}{text}
+                    {/* {text ? 'text:': ''}{text} */}
+                    {text}
                 </div>
                 <div className='p-btm'>
                     <p>like: {like}</p>
+                    <div onClick={() => likeplus(sec)} className='btn' style={{width: '50px', height: '20px'}}>Like</div>
                 </div>
             </div>
 
@@ -43,13 +47,15 @@ const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }
                     <p>{hr}:{min}</p>
                 </div>
                 <div>
-                    {text ? 'text:': ''}{text}
+                    {/* {text ? 'text:': ''}{text} */}
+                    {text}
                 </div>
                 <div>
                     <img src={url} width='350px' alt={sec+'.png'}/>
                 </div>
                 <div className='p-btm'>
                     <p>like: {like}</p>
+                    <div onClick={() => likeplus(sec)} className='btn' style={{width: '50px', height: '20px'}}>Like</div>
                 </div>
             </div>
         );

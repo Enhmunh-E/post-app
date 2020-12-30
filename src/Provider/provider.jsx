@@ -8,9 +8,11 @@ export const Context = createContext({
     Login: () => {},
     SignUp: () => {},
     LogOut: () => {},
-    newPost: () => {}
+    newPost: () => {},
+    likeplus: () => {},
 })
 export const Provider = ({children}) => {
+    const [likeItem, setLikeItem] = useState([]);
     const [user, setUser] = useState(null);
     const [userName, setUserName] = useState('');
     // var userData = auth.currentUser;
@@ -107,7 +109,7 @@ export const Provider = ({children}) => {
         var r = 'upload done';
         var storageRef = storage.ref();
         var uploadImg = storageRef.child(`img-storage/${sec}.png`).put(file);
-        await uploadImg.on('state_changed', (snapshot) => {
+        uploadImg.on('state_changed', (snapshot) => {
         }, function(error) {
             // alert(error.message);
             r = error.message;
@@ -122,7 +124,7 @@ export const Provider = ({children}) => {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        await db.collection("Posts").add({
+        await db.collection("Posts").doc(`${sec}`).set({
             like: 0,
             text: text,
             sec: sec,
@@ -130,7 +132,8 @@ export const Provider = ({children}) => {
             hour: today.getHours(),
             minutes: today.getMinutes(),
             user: userName,
-            imgname: name
+            imgname: name,
+            likedpersons: [],
         })
         .then(function(docRef) {
             // console.log("Document written with ID: ", docRef.id);
@@ -141,8 +144,23 @@ export const Provider = ({children}) => {
         });
         return r;
     }
+    const likeplus = (sec) => {
+        db.collection('Posts').doc(`${sec}`).get()
+        .then(snapshot => {
+            var like = snapshot.data().like, likedpersons = [...snapshot.data().likedpersons];
+            if (likedpersons.includes(user.email)) {
+                var filtered = likedpersons.filter((value) => { 
+                    return value !== user.email;
+                });
+                db.collection("Posts").doc(`${sec}`).update({like: like - 1, likedpersons: filtered});
+            }else {
+                likedpersons.push(user.email);
+                db.collection("Posts").doc(`${sec}`).update({like: like + 1, likedpersons: likedpersons});
+            }
+        });
+    }
     return(
-        <Context.Provider value={{ user, userName, Login, SignUp, LogOut, newPost }}>
+        <Context.Provider value={{ user, userName, Login, SignUp, LogOut, newPost, likeplus }}>
             {children}
         </Context.Provider>
     )

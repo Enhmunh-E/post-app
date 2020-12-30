@@ -17,9 +17,6 @@ const NewPostComp = () => {
             s.then((r) => {
                 if (r === 'done') {
                     history.push('/home');
-                    if (type == 'img') {
-                        window.location.reload();
-                    }
                 }else {
                     alert(r);
                 }

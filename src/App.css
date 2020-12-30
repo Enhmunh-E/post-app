@@ -23,6 +23,7 @@ p {
   margin: 0;
 }
 .post {
+  width: 350px;
   padding: 10px;
   margin: 20px 0px;
   background-color: #242526;
@@ -30,6 +31,9 @@ p {
   border-radius: 10px;
 }
 .p-btm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   border-top: 1px #3e4042 solid;
 }
 .btn {
