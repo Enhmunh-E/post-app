@@ -4,12 +4,6 @@ import { Context } from '../Provider/provider';
 const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }) => {
     const [url, setUrl] = useState('');
     const { likeplus } = useContext(Context);
-    if (imgname !== '') {
-        var itemRef = storage.ref().child(`img-storage/${sec}.png`);
-        itemRef.getDownloadURL().then(function(downloadURL) {
-            setUrl(downloadURL);
-        });
-    }
     var min = minutes;
     if (minutes < 10) {
         min = '0' + minutes;
@@ -24,8 +18,10 @@ const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }
                 {/* {index+'.'} */}
                 <div>
                     <div>{user}</div>
-                    <p>{date}</p>
-                    <p>{hr}:{min}</p>
+                    <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', fontSize: 'small', color: 'grey'}}>
+                        <p style={{marginRight: '10px'}}>{date}</p>
+                        <p>{hr}:{min}</p>
+                    </div>
                 </div>
                 <div>
                     {/* {text ? 'text:': ''}{text} */}
@@ -43,15 +39,17 @@ const PostItem = ({ like, text, sec, hour, minutes, date, user, imgname, index }
             <div className='post'>
                 <div>
                     <div>{user}</div>
-                    <p>date: {date}</p>
-                    <p>{hr}:{min}</p>
+                    <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', fontSize: 'small', color: 'grey'}}>
+                        <p style={{marginRight: '10px'}}>{date}</p>
+                        <p>{hr}:{min}</p>
+                    </div>
                 </div>
                 <div>
                     {/* {text ? 'text:': ''}{text} */}
                     {text}
                 </div>
                 <div>
-                    <img src={url} width='350px' alt={sec+'.png'}/>
+                    <img src={imgname} width='350px' alt={sec+'.png'}/>
                 </div>
                 <div className='p-btm'>
                     <p>like: {like}</p>

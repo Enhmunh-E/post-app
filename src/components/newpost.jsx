@@ -13,9 +13,9 @@ const NewPostComp = () => {
             if (file.length === 0) {
                 type = 'text';
             }
-            let s = newPost(file, text, type);
+            let s = newPost(file, text);
             s.then((r) => {
-                if (r === 'done') {
+                if (r === 'upload done') {
                     history.push('/home');
                 }else {
                     alert(r);

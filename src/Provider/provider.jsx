@@ -83,42 +83,23 @@ export const Provider = ({children}) => {
             })
         })
     }
-    const newPost = async (file, text, type) => {
-        let sec = Date.now();
-        let done = 'done';
-        let name = '';
-        if (type === 'img') {
-            let r = uploadImg(file, sec);
-            r.then((r) => {
-                if (r !== 'upload done') {
-                    alert(r);
-                    done = r;
-                }
-            })
-            name = file.name;
-        }
-        let r = uploadText(text, name, sec);
-        r.then((rt) => {
-            if (rt !== 'upload done') {
-                done = rt;
-            }
-        })
-        return done;
-    }
-    const uploadImg = async (file, sec) => {
+    const newPost = async (file, text) => {
         var r = 'upload done';
-        var storageRef = storage.ref();
-        var uploadImg = storageRef.child(`img-storage/${sec}.png`).put(file);
-        uploadImg.on('state_changed', (snapshot) => {
-        }, function(error) {
-            // alert(error.message);
-            r = error.message;
-        }, function() {
-            // console.log('upload done');
-        });
+        let sec = Date.now();
+        if (file !== null && file !== undefined && file.length !== 0) {
+            var storageRef = storage.ref();
+            var uploadImg = await storageRef.child(`img-storage/${sec}.png`);
+            await uploadImg.put(file).then((snapshot) => {
+                snapshot.ref.getDownloadURL().then((url) => {
+                    uploadText(text, sec, url);
+                })
+            })
+        }else {
+            uploadText(text, sec, '');
+        }   
         return r;
     }
-    const uploadText = async (text, name, sec) => {
+    const uploadText = async (text, sec, url) => {
         var r = 'upload done';
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -132,17 +113,9 @@ export const Provider = ({children}) => {
             hour: today.getHours(),
             minutes: today.getMinutes(),
             user: userName,
-            imgname: name,
+            imgname: url,
             likedpersons: [],
         })
-        .then(function(docRef) {
-            // console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            r = error.message;
-            // console.l(error);
-        });
-        return r;
     }
     const likeplus = (sec) => {
         db.collection('Posts').doc(`${sec}`).get()
